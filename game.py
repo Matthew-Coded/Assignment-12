@@ -21,6 +21,7 @@ class PokemonGame:
         self.wild_pokemon = Pokemon(
             data['name'],
             data['id'],
+            data['hp'],
             data['attack'],
             data['sprite_url'],
             data['type']
@@ -31,21 +32,21 @@ class PokemonGame:
         print('\n1. Try to catch.')
         print('2. Flee')
 
-        choice = input(int('\nWhat do you want to do? ')).strip()
-        if choice == 1:
+        choice = input('\nWhat do you want to do? ').strip()
+        if choice == '1':
             self.try_catch_pokemon()
 
-        elif choice == 2:
+        elif choice == '2':
             print(f'You fled from {self.wild_pokemon.name}.\n')
             self.wild_pokemon = None
 
         else:
             print('Invalid choice. Wild pokemon fled the scene!')
 
-
     def try_catch_pokemon(self):
         if not self.wild_pokemon:
             print('There is no pokemon to catch right now.')
+            input("\nPress Enter to return to the menu...")
             return
         
         catch_rate = 0.25
@@ -57,10 +58,21 @@ class PokemonGame:
             added = self.player.add_pokemon(self.wild_pokemon)
             if added:
                 print(f"Caught 'em! {self.wild_pokemon.name} was caught!")
-                self.wild_pokemon = None
 
             else:
-                print(f"Darn! {self.wild_pokemon.name} broke free!")
+                print("Your collection is full! The pokemon ran away!")
+
+            self.wild_pokemon = None
+
+        else:
+            print(f"Oh no! {self.wild_pokemon.name} broke free!")
+            again = input("Try again? (y/n): ").strip().lower()
+            if again.startswith("y"):
+                return self.try_catch_pokemon()
+            else:
+                print(f"{self.wild_pokemon.name} ran away...")
+                self.wild_pokemon = None
+
 
     def remove_pokemon_menu(self):
         print('\n=== Your Collection ===')
@@ -85,7 +97,6 @@ class PokemonGame:
 
         else:
             print(f'You released {removed.name}.')
-
 
     def choose_starter(self):
         print("\nHello " + self.player.name + "! Choose your stater pokemon!\n")
@@ -122,4 +133,26 @@ class PokemonGame:
             else:
                 print("Please enter 1, 2, or 3.")
 
-    def
+    def main_menu(self):
+        while True:
+            print(f'=== Pokemon Adventure - {self.player.name} ===')
+            print("1. Go hunting (find wild Pokemon)")
+            print("2. View your collection")
+            print("3. Remove Pokemon from collection")
+            print("4. Quit game")
+
+            choice = input('\nWhat would you like to do? ').strip()
+            if choice == '1':
+                self.go_hunting()
+
+            elif choice == '2':
+                self.player.show_collection()
+
+            elif choice == '3':
+                self.remove_pokemon_menu()
+
+            elif choice == '4':
+                print('Thanks for playing!')
+
+            else:
+                print('Invalid option. Choose 1-4.\n')
