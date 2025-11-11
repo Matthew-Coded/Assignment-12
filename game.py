@@ -39,6 +39,7 @@ class PokemonGame:
         elif choice == '2':
             print(f'You fled from {self.wild_pokemon.name}.\n')
             self.wild_pokemon = None
+            input("\nPress Enter to return to the menu...")
 
         else:
             print('Invalid choice. Wild pokemon fled the scene!')
@@ -73,7 +74,6 @@ class PokemonGame:
                 print(f"{self.wild_pokemon.name} ran away...")
                 self.wild_pokemon = None
 
-
     def remove_pokemon_menu(self):
         print('\n=== Your Collection ===')
         self.player.show_collection()
@@ -92,7 +92,7 @@ class PokemonGame:
         
         index = as_int - 1
         removed = self.player.remove_pokemon(index)
-        if removed in None:
+        if removed is None:
             print('Invalid choice or number out of range.\n')
 
         else:
@@ -153,6 +153,7 @@ class PokemonGame:
 
             elif choice == '4':
                 print('Thanks for playing!')
+                break
 
             else:
                 print('Invalid option. Choose 1-4.\n')
